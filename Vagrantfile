@@ -36,6 +36,8 @@ Vagrant.configure("2") do |config|
     mv alertmanager /usr/local/bin/
     mv amtool /usr/local/bin/
     chown alertmanager:alertmanager /usr/local/bin/alertmanager
+    
+        
     chown alertmanager:alertmanager /usr/local/bin/amtool
     mv alertmanager.yml /etc/alertmanager/
     chown -R alertmanager:alertmanager /etc/alertmanager/
@@ -43,6 +45,29 @@ Vagrant.configure("2") do |config|
     systemctl daemon-reload
     systemctl start alertmanager 
     systemctl enable alertmanager
+    popd
+    popd
+    
+    ### Grafana
+    sudo apt-get install -y libfontconfig
+    pushd tmp
+    wget https://dl.grafana.com/oss/release/grafana_6.2.1_amd64.deb 
+    sudo dpkg -i grafana_6.2.1_amd64.deb 
+    sudo systemctl enable --now grafana-server
+    popd 
+    
+    
+    ####Node Exporter
+    useradd --no-create-home --shell /bin/false node_exporter
+    pushd tmp    
+    wget https://github.com/prometheus/node_exporter/releases/download/v0.18.0/node_exporter-0.18.0.linux-amd64.tar.gz
+    tar -xvf node_exporter-0.18.0.linux-amd64.tar.gz
+    pushd node_exporter-0.18.0.linux-amd64
+    mv node_exporter /usr/local/bin/
+    chown node_exporter:node_exporter /usr/local/bin/node_exporter
+    cp /vagrant/node_exporter.service /etc/systemd/system/node_exporter.service
+    systemctl daemon-reload
+    systemctl start node_exporter
     popd
     popd
     
@@ -69,19 +94,6 @@ Vagrant.configure("2") do |config|
     systemctl enable prometheus
     popd
     popd
-    
-    ### Grafana
-    sudo apt-get install -y libfontconfig
-    pushd tmp
-    wget https://dl.grafana.com/oss/release/grafana_6.2.1_amd64.deb 
-    sudo dpkg -i grafana_6.2.1_amd64.deb 
-    sudo systemctl enable --now grafana-server
-    popd 
-    
-    ####Node Exporter
-    useradd --no-create-home --shell /bin/false node_exporter
-    pushd tmp
-    
     
     
   SHELL
