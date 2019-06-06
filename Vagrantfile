@@ -68,6 +68,7 @@ Vagrant.configure("2") do |config|
     cp /vagrant/node_exporter.service /etc/systemd/system/node_exporter.service
     systemctl daemon-reload
     systemctl start node_exporter
+    systemctl enable node_exporter
     popd
     popd
     
