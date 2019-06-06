@@ -84,6 +84,7 @@ Vagrant.configure("2") do |config|
     pushd prometheus-2.10.0.linux-amd64
     mv console* /etc/prometheus/
     cp /vagrant/prometheus.yml /etc/prometheus/
+    cp /vagrant/bms_rules.yml /etc/prometheus/
     chown -R prometheus:prometheus /etc/prometheus/
     mv prometheus /usr/local/bin
     mv promtool /usr/local/bin
@@ -95,8 +96,7 @@ Vagrant.configure("2") do |config|
     systemctl enable prometheus
     popd
     popd
-    
-    
+        
   SHELL
  end
 end

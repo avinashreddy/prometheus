@@ -1,0 +1,13 @@
+groups:
+  - name: uptime
+    rules:
+      - record: job:uptime:sssbrokertec
+        expr: up{job="sss-brokertec"}
+      - alert: Application down - sssbrokertec
+        expr: job:uptime:sssbrokertec < .75
+        for: 1m
+        labels:
+          severity: page
+          team: devops
+        annotations:
+          overview: '{{printf "%.2f" $value}}% instances are up for {{ $labels.job }}'
