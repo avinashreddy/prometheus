@@ -18,7 +18,7 @@ route:
 receivers:
  - name: 'slack'
    slack_configs:
-    - channel: "#prometheus"
+    - channel: "monitor-higate-dev"
       api_url: https://hooks.slack.com/services/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
       text: "Overview: {{ .CommonAnnotations.overview }}"
 
